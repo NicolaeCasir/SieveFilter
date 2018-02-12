@@ -15,9 +15,9 @@
     },
     "extra": {
     		"laravel": {
-    			"providers": {
+    			"providers": [
     				"Nicolae\\Sieve\\SieveServiceProvider"
-    			}
+    			]
     		}
     }
 }
