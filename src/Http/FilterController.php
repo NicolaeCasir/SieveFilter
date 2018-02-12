@@ -14,10 +14,10 @@ class FilterController
     	$domain = $email[1];
 			$path = resource_path('/sieve/' . $domain . '/' . $username. '/sieve/');
 		
-    	if(@file_get_contents($path . 'rules.sieve')) === false){
+    	if(@file_get_contents($path . 'rules.sieve') === false){
     		return "404";
     	}
-    	$script = file_get_contents( $path . 'rules.sieve'));
+    	$script = file_get_contents( $path . 'rules.sieve');
     	$exploded = explode("\n", $script);
     	$expressions = array();
     	$filter = [
