@@ -12,11 +12,12 @@ class FilterController
 			$email = explode("@", Input::get('email'));
     	$username = $email[0];
     	$domain = $email[1];
-
-    	if(@file_get_contents(resource_path('/sieve/' . $domain . '/' . $username. '/sieve/rules.sieve')) === false){
+			$path = resource_path('/sieve/' . $domain . '/' . $username. '/sieve/');
+		
+    	if(@file_get_contents($path . 'rules.sieve')) === false){
     		return "404";
     	}
-    	$script = file_get_contents(resource_path('/sieve/' . $domain . '/' . $username. '/sieve/rules.sieve'));
+    	$script = file_get_contents( $path . 'rules.sieve'));
     	$exploded = explode("\n", $script);
     	$expressions = array();
     	$filter = [
@@ -39,7 +40,6 @@ class FilterController
     		if(str_contains($line, ")")){
 	    		$end = $i;
 	    	}
-    			
     		if(str_contains($line, 'fileinto')) {
     			$str = explode("\"", $line);
     			$filter["destination_folder"] = $str[1];
@@ -51,9 +51,7 @@ class FilterController
     			//if contains
     			if(str_contains($line, ":contains")){
 	    			$expressions[$count]['operator'] = "contains";
-
 	    			$str = explode("\"", $line);
-
 	    			$expressions[$count]['field_name'] = $str[1];
 	    			$expressions[$count]['expr_value'] = $str[3];
 	    			$count++;
@@ -61,10 +59,8 @@ class FilterController
 
 	    		//if start with or end with
     			if(str_contains($line, ":regex")){
-
 	    			$str = explode("\"", $line);
-
-	    			$value = str_split($str[3]);
+						$value = str_split($str[3]);
 	    			if ($value[0] === '^') {
 	    					$expressions[$count]['expr_value'] = ltrim($str[3], '^');
 	    					$operator = "starts";
@@ -73,23 +69,17 @@ class FilterController
 	    				$operator = "ends";
 	    			}
 	    			$expressions[$count]['field_name'] = $str[1];
-	    			
-
 	    			$expressions[$count]['operator'] = $operator;
 	    			$count++;
 	    		}
-
 	    		//if is exactly
     			if(str_contains($line, ":is")){
-
 	    			$str = explode("\"", $line);
-
 	    			$expressions[$count]['operator'] = "exactly";
 	    			$expressions[$count]['field_name'] = $str[1];
 	    			$expressions[$count]['expr_value'] = $str[3];
 	    			$count++;
 	    		}
-
     		}
     	}
 
@@ -101,8 +91,8 @@ class FilterController
 
 		}
     public function saveFilter (Request $request){
-    	$script = $this->validateScript($request);
-
+			$script = $this->validateScript($request);
+			
     	$email = explode("@", $request->params['filter']['email']);
     	$username = $email[0];
     	$domain = $email[1];
@@ -111,13 +101,12 @@ class FilterController
     	File::makeDirectory($path, 0777, true, true);
     	$return = File::put($path . 'rules.sieve', $script);
     	return "Sieve script was saved with name rules.sieve in " . $path;
-
     }
 
     public function validateScript (Request $request){
     	$r = $request->params;
-    	$t = 0;
-
+			$t = 0;
+			
     	foreach($r['expressions'] as $ex){
 			if($ex['field_name'] !== null) $t++;
 		}

@@ -13,7 +13,6 @@ class SieveServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        //
         include __DIR__ . '/../routes/web.php';
         $this->loadViewsFrom(__DIR__ . '/../resources/views', 'sieve');
     }
@@ -25,7 +24,6 @@ class SieveServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        //
         $this->publishes([__DIR__ . '/../publishable/assets' => public_path('assets')]);
     }
 }
