@@ -7,5 +7,17 @@
             "email": "nicolae.casir@gmail.com"
         }
     ],
-    "require": {}
+    "require": {},
+    "autoload": {
+        "psr-4": {
+            "Nicolae\\Sieve\\": "src/"
+        }
+    },
+    "extra": {
+    		"laravel": {
+    			"providers": {
+    				"Nicolae\\Sieve\\SieveServiceProvider"
+    			}
+    		}
+    }
 }
