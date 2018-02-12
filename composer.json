@@ -1,0 +1,11 @@
+{
+    "name": "nicolaecasir/sieve",
+    "description": "Sieve Filter for Laravel",
+    "authors": [
+        {
+            "name": "Nicolae Casîr",
+            "email": "nicolae.casir@gmail.com"
+        }
+    ],
+    "require": {}
+}
